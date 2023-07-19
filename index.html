@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
  <head>
-     <title>Form Template</title>
+     <title>Looping Forms</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
   <link rel="stylesheet" href="css/main.css">
@@ -10,41 +10,36 @@
  </head>
  <body>
      <header>
-     <h1 class="page-header">Form Template</h1>
-        <nav class="topnav" id="myTopnav">
-            <a href="index.html" class="active">Home</a>
-            <a href="#">Link</a>
-            <a href="#">Link</a>
-            <a href="javascript:void(0);" class="icon" onclick="myFunction()">&#9776;</a>
-        </nav>
+     <h1 class="page-header">Looping Forms</h1>
      </header>
      
    <main class="wrapper">
  
-    <h2 class="subheader">Place form code below:</h2>
+    <h2 class="subheader">Add your shipping info below:</h2>
+    <div id="output">
     <form method="get" action="" class="main-form">
       <div>
-        <lable for="FirstName">First Name</lable><br>
-        <input type="text" name="FirstName" id="FirstName" placeholder="First Name" required autofocus>
+        <label for="FirstName">First Name</label><br>
+        <input type="text" name="First_Name" id="FirstName" placeholder="First Name" required autofocus>
       </div>
       <div>
-        <lable for="LastName">Last Name</lable><br>
-        <input type="text" name="LastName" id="LastName" placeholder="Last Name" required>
+        <label for="LastName">Last Name</label><br>
+        <input type="text" name="Last_Name" id="LastName" placeholder="Last Name" required>
       </div>
       <div>
-        <lable for="Email">Email</lable><br>
+        <label for="Email">Email</label><br>
         <input type="email" name="Email" id="Email" placeholder="Email" required>
       </div>
       <div>
-        <lable for="Address">Address</lable><br>
+        <label for="Address">Address</label><br>
         <input type="text" name="Address" id="Address" placeholder="Address" required>
       </div>
       <div>
-        <lable for="City">City</lable><br>
+        <label for="City">City</label><br>
         <input type="text" name="City" id="City" placeholder="City" required>
       </div>
       <div>
-        <lable for="State">State</lable><br>
+        <label for="State">State</label><br>
         <select name="State" id="State" required>
           <option value="">Please select state</option>
           <option value="AK">Alaska</option>
@@ -54,29 +49,18 @@
         </select>
       </div>
       <div>
-        <fieldset>
-          <legend>Would you like to be on our mailing list?</legend>
-          <label><input type="radio" name="JoinMailingList" value="Yes" required> Yes</label><br>
-          <label><input type="radio" name="JoinMailingList" value="No">  No</label>
-        </fieldset>
+        <label for="PostalCode">Postal Code</label><br>
+        <input type="text" name="Postal_Code" id="PostalCode" placeholder="Postal Code" required>
       </div>
       <div>
-        <fieldset>
-          <legend>Interested In?</legend>
-          <label><input type="checkbox" name="InterestedIn" value="Website" required> Website</label><br>
-          <label><input type="checkbox" name="InterestedIn" value="OnlineCalendar" required> Online Calendar</label><br>
-          <label><input type="checkbox" name="InterestedIn" value="ContactForm" required> Contact Form</label><br>
-          <label><input type="checkbox" name="InterestedIn" value="Lollipops" required> Complimentary Lollipops</label><br>
-        </fieldset>
-      </div>
-      <div>
-        <lable for="Comments">Comments</lable><br>
-        <textarea name="Comments" id="Comments" placeholder="Comments" rows="4" cols="36"></textarea>
+        <label for="Note">Note</label><br>
+        <textarea name="Note" id="Note" placeholder="Note" rows="4" cols="36"></textarea>
       </div>
       <div>
         <input type="submit">
       </div>
     </form>
+  </div>
     <h3>Page Origins</h3>
     <p>The HTML/CSS comes from Sara Newman's Web Fundamentals class as taught at Seattle Central. This page provides a basis for students to build a responsive portal page.</p>
     <p>The mobile navigation originates from <a href="https://www.w3schools.com/howto/howto_js_mobile_navbar.asp" target="_blank">W3Schools</a></p>
@@ -89,5 +73,49 @@
     </footer>
   </main>
   <script src="js/main.js"></script>   
+  <script>
+
+  function titleCase(str) {
+    str = str.toLowerCase().split(' ');
+    for (var i = 0; i < str.length; i++) {
+      str[i] = str[i].charAt(0).toUpperCase() + str[i].slice(1); 
+    }
+    return str.join(' ');
+  }
+
+    const queryString = window.location.search;
+
+    const urlParams = new URLSearchParams(queryString);
+
+    
+
+    if(queryString.length > 0){//form submitted!
+      let myOutput = `<div id="container">`;//will store data for display
+     
+      urlParams.forEach(function(value,key){
+        //console.log(value);
+
+        key = key.split("_").join(" ");//cut underscore and add us a space
+        //title case first, last, address, city only 
+        switch(key){
+          case "First Name":
+          case "Last Name":
+          case "Address":
+          case "City":
+            value = titleCase(value);
+          break;
+        }
+
+        myOutput += `<p>${key}: ${value}</p>`;//looping through data
+      });
+
+       myOutput += `<p><a href="index.html">CLEAR</a></p>`; 
+       myOutput += `</div>`;
+   
+       document.querySelector("#output").innerHTML = myOutput;
+           
+       }
+       
+  </script>
  </body>
 </html>
